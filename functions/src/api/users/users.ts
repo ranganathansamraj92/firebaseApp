@@ -46,14 +46,20 @@ async function getAllUsers(req: express.Request, res: express.Response) {
       console.log(item.key, item);
       
     });
-    let data = {};
-    data = results; 
+    let users = {}; 
+    let data = {users:users};
+  
+    users = results; 
+    data.users = results; 
+    
+   
     return res.status(200).send({status:true,msg:"success",data:data});
 
   }).catch(e=>{
     return res.status(500).send({status:false,msg:e});
   })  
 }
+
 functions.database.ref('base/users').onWrite(event=>{
   console.log('user  created!'+event.after.val());
 })
