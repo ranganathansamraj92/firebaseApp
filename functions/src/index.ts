@@ -11,6 +11,11 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 
 
 app.use("/v1", apipaths.apiRouter);
+exports.api = functions.https.onRequest(app);
 
 
-exports.api = functions.https.onRequest(app)
+exports.usersTriggers = apipaths.usersTriggers.f;
+exports.locTrig = apipaths.usersTriggers.locationTrigggers;
+
+
+

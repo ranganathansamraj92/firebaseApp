@@ -1,10 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as express from "express";
 export let userRouter = express.Router();
-
 import * as db from '../../api/firebase-db/db';
-
-
 
 userRouter.get('/find/:uid', getUser);
 
@@ -34,6 +31,19 @@ async function saveUser(req: express.Request, res: express.Response) {
   })  
 }
 
+export  const  f =  functions.database.ref('/base/users/-Ld8b5lnZXKMeGWx0rxu').onWrite(event=>{
+  console.log('Its got trihggered! from users.ts');
+  console.log('just onWrite in user '+event.after);
+  
+});
+
+export const  locationTrigggers = functions.database.ref('base/users/{id}/location').onUpdate((event,context) => {
+  console.log('Address =?  location '+ context.params.id);
+  console.log('locationTrigggers  location '+event.after.val());
+});
+
+
+
 async function getAllUsers(req: express.Request, res: express.Response) {
 
   db.database.ref('/base/users').once('value').then(snap =>{
@@ -59,10 +69,6 @@ async function getAllUsers(req: express.Request, res: express.Response) {
     return res.status(500).send({status:false,msg:e});
   })  
 }
-
-functions.database.ref('base/users').onWrite(event=>{
-  console.log('user  created!'+event.after.val());
-})
 
 
 
