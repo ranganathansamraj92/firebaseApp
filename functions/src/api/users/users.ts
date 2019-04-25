@@ -2,10 +2,13 @@ import * as functions from 'firebase-functions';
 import * as express from "express";
 export let userRouter = express.Router();
 import * as db from '../../api/firebase-db/db';
+import * as register from '../../api/users/register';
 
 userRouter.get('/find/:uid', getUser);
 
 userRouter.post('/', saveUser);
+
+userRouter.post('/signUp', register.signUp);
 
 userRouter.get('/:age', getAllUsers);
 
