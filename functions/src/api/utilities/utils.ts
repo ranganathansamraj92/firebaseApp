@@ -9,6 +9,10 @@ export function sayHello(name:string): string {
     return ('Hello '+name + " by "+ username);
 }
 
+export function sayHello2(name:string): string {
+    return ('Hello '+name + " by "+ username);
+}
+
 const meta = {status:false,message:""};
 const data = {result:{}};
 const outputRes = {meta:meta,data:data};
@@ -40,6 +44,27 @@ export function GetFormattedDate () {
     return dateTime;
 }
 
+export function GetCurrentTime () {    
+    const indiaDateTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"});
+    const indiaTime = new Date(indiaDateTime);
+    console.log('India time: '+indiaTime.toLocaleString());
+    const dateTime = dateformat(indiaTime, "HH:MM TT");
+    console.log('India time format '+dateTime);
+    return dateTime;
+}
+
 export function sendMessage(token_id:string,payload:any) {
    return db.DBadmin.messaging().sendToDevice(token_id, payload);   
+}
+
+export function sendMessages(token_id:string,payload:any):Promise<any> {
+    return new Promise(resolve => {
+      setTimeout(() => {  
+        resolve(    
+            db.DBadmin.messaging().sendToDevice(token_id, payload).then(response => {
+                console.log('This was the notification Feature',response);
+            })  
+        )
+      }, 1000)
+    })
 }
