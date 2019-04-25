@@ -16,6 +16,8 @@ exports.api = functions.https.onRequest(app);
 
 exports.usersTriggers = apipaths.usersTriggers.f;
 exports.locTrig = apipaths.usersTriggers.locationTrigggers;
+exports.registerIdToken = apipaths.usersApis.registerApis.registerTokenTrigger;
+
 
 
 

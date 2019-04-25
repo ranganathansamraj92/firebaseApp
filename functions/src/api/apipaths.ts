@@ -5,6 +5,7 @@ import * as messages from "../api/messages/msg";
 import * as greetUser from "../api/greetings/hello";
 
 export let usersTriggers = usersApi;
+export let usersApis = usersApi;
 
 
 apiRouter.use('/greetings', greetUser.helloRouter);

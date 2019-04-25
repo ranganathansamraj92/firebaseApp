@@ -1,4 +1,7 @@
+import * as db from '../../api/firebase-db/db';
 import * as express from "express";
+import * as dateformat from "dateformat"
+
 
 const  username = "ranganathan";
 
@@ -6,11 +9,11 @@ export function sayHello(name:string): string {
     return ('Hello '+name + " by "+ username);
 }
 
-const meta = {status:false,msg:""};
+const meta = {status:false,message:""};
 const data = {result:{}};
 const outputRes = {meta:meta,data:data};
 meta.status =  false;
-meta.msg =  "unknown";
+meta.message =  "unknown";
 
 outputRes['meta'] = meta;
 outputRes['data'] = data;
@@ -18,7 +21,7 @@ outputRes['data'] = data;
 
 
 export function  makeCommonRes(res: express.Response,status:boolean,msg:string,name:string,output:any) :void {     
-    meta.msg= msg;
+    meta.message= msg;
     meta.status= status;
     data['result'] = output;
     outputRes.meta = meta;
@@ -26,4 +29,17 @@ export function  makeCommonRes(res: express.Response,status:boolean,msg:string,n
     console.log("prepared  outputRes => ",outputRes); 
     res.send(outputRes);    
     //testCallback(outputRes);            
+}
+
+export function GetFormattedDate () {    
+    const indiaDateTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"});
+    const indiaTime = new Date(indiaDateTime);
+    console.log('India time: '+indiaTime.toLocaleString());
+    const dateTime = dateformat(indiaTime, "ddd, mmm dd, yyyy, HH:MM TT");
+    console.log('India time format '+dateTime);
+    return dateTime;
+}
+
+export function sendMessage(token_id:string,payload:any) {
+   return db.DBadmin.messaging().sendToDevice(token_id, payload);   
 }

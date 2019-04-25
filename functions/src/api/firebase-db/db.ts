@@ -9,3 +9,5 @@ admin.initializeApp({
 export const database  = admin.database();
 
 export const auth  =admin.auth();
+
+export const DBadmin  =admin;

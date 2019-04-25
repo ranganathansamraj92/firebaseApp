@@ -12,6 +12,8 @@ userRouter.post('/signUp', register.signUp);
 
 userRouter.get('/:age', getAllUsers);
 
+export let registerApis = register;
+
 
 async function getUser(req: express.Request, res: express.Response) {
     const uid = req.params.uid;
@@ -60,7 +62,7 @@ async function getAllUsers(req: express.Request, res: express.Response) {
       
     });
     let users = {}; 
-    let data = {users:users};
+    const data = {users:users};
   
     users = results; 
     data.users = results; 
