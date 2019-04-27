@@ -3,6 +3,7 @@ import * as express from "express";
 export let userRouter = express.Router();
 import * as db from '../../api/firebase-db/db';
 import * as register from '../../api/users/register';
+import * as utils from '../../api/utilities/utils';
 
 userRouter.get('/find/:uid', getUser);
 
@@ -51,14 +52,15 @@ export const  locationTrigggers = functions.database.ref('base/users/{id}/locati
 
 async function getAllUsers(req: express.Request, res: express.Response) {
 
-  db.database.ref('/base/users').once('value').then(snap =>{
+  db.database.ref('/users').once('value').then(snap =>{
     const results = Array<string>();
     snap.forEach(function(childSnapshot) {
-      var item = childSnapshot.val();
-      item.key = childSnapshot.key;
+      let json = childSnapshot.val();
+      json.id = childSnapshot.key;
+      json.userName = childSnapshot.val().name;
 
-      results.push(item);
-      console.log(item.key, item);
+      results.push(json);
+      console.log(json.key, json);
       
     });
     let users = {}; 
@@ -66,12 +68,12 @@ async function getAllUsers(req: express.Request, res: express.Response) {
   
     users = results; 
     data.users = results; 
-    
+    utils.makeCommonRes(res,true,"msg","data",data);
    
-    return res.status(200).send({status:true,msg:"success",data:data});
+    //return res.status(200).send({status:true,msg:"success",data:data});
 
   }).catch(e=>{
-    return res.status(500).send({status:false,msg:e});
+    return res.status(200).send({status:false,msg:e});
   })  
 }
 

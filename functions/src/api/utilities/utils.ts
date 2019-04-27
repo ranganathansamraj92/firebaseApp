@@ -10,7 +10,7 @@ export function sayHello(name:string): string {
 }
 
 const meta = {status:false,message:""};
-const data = {result:{}};
+const data = {};
 const outputRes = {meta:meta,data:data};
 meta.status =  false;
 meta.message =  "unknown";
@@ -23,9 +23,8 @@ outputRes['data'] = data;
 export function  makeCommonRes(res: express.Response,status:boolean,msg:string,name:string,output:any) :void {     
     meta.message= msg;
     meta.status= status;
-    data['result'] = output;
     outputRes.meta = meta;
-    outputRes.data = data;
+    outputRes.data = output;
     console.log("prepared  outputRes => ",outputRes); 
     res.send(outputRes);    
     //testCallback(outputRes);            
