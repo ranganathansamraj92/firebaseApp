@@ -4,6 +4,7 @@ export let userRouter = express.Router();
 import * as db from '../../api/firebase-db/db';
 import * as register from '../../api/users/register';
 import * as utils from '../../api/utilities/utils';
+import * as payloads from '../../api/utilities/payloads';
 
 userRouter.get('/find/:uid', getUser);
 
@@ -48,6 +49,21 @@ export const  locationTrigggers = functions.database.ref('base/users/{id}/locati
   console.log('locationTrigggers  location '+event.after.val());
 });
 
+export const myCustomFunction =
+  functions.remoteConfig.onUpdate(async (versionMetadata) => {
+    console.log("The project's Remote Config template was updated to " +
+                "version number : ", versionMetadata.versionNumber);
+    // Use the versionMetadata object further...
+    utils.sendMessageToAll("topic",payloads.welcomPayloads).then(t=>{
+      console.log('sendMessage  done  :  '+t); 
+      return null;
+    }).catch(e=>{
+      console.log('sendMessage  failed  :  '+e); 
+      return null;
+    });
+    
+  });
+
 
 
 async function getAllUsers(req: express.Request, res: express.Response) {
@@ -69,8 +85,6 @@ async function getAllUsers(req: express.Request, res: express.Response) {
     users = results; 
     data.users = results; 
     utils.makeCommonRes(res,true,"msg","data",data);
-   
-    //return res.status(200).send({status:true,msg:"success",data:data});
 
   }).catch(e=>{
     return res.status(200).send({status:false,msg:e});

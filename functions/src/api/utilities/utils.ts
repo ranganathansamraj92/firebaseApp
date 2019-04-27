@@ -56,6 +56,10 @@ export function sendMessage(token_id:string,payload:any) {
    return db.DBadmin.messaging().sendToDevice(token_id, payload);   
 }
 
+export function sendMessageToAll(topic:string,payload:any) {
+    return db.DBadmin.messaging().sendToTopic(topic, payload);   
+ }
+
 export function sendMessages(token_id:string,payload:any):Promise<any> {
     return new Promise(resolve => {
       setTimeout(() => {  
