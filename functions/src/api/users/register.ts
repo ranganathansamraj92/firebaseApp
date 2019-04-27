@@ -40,7 +40,7 @@ export const signUp = functions.https.onRequest((req, res) => {
             return db.database.ref('users/' + user.uid).set(userObject).then(snapShot =>{
                 console.log('DB Updated userObjects ');  
                 let msg = 'registartion completed';
-                utils.makeCommonRes(res,false,msg,"result",{token:userId,message:msg}); 
+                utils.makeCommonRes(res,true,msg,"result",{token:userId,message:msg}); 
             }).catch(error => {
                 console.log('DB Update failed on new user creation -> ', error);    
             });
@@ -70,14 +70,19 @@ export const  registerTokenTrigger = functions.database.ref('users/{userId}/auth
             // Only edit data 
             console.log('loggedIn! userId =?   '+ context.params.userId);           
             return change.before.ref.parent!.ref.child('loggedInAt').set(utils.GetFormattedDate()).then(error=>{
+                console.log('loggedInAt  done!  :  '); 
                 payloads.Loginpayloads.notification.title = "Hi! "+snap.val().name;
-                payloads.Loginpayloads.notification.body = payloads.loginBodyText + " "+utils.GetFormattedDate();
+                payloads.Loginpayloads.notification.body = payloads.loginBodyText + " "+utils.GetCurrentTime();
                 utils.sendMessage(token_id,payloads.Loginpayloads).then(t=>{
-                    return null; 
+                    console.log('sendMessage  done  :  '+t); 
+                    return null;
                 }).catch(e=>{
-                    return null;  
+                    console.log('sendMessage  failed  :  '+e); 
+                    return null;
                 });
-            }).catch(e=>{
+                
+            }).catch(e=>{   
+                console.log('loggedInAt  failed  :  '+e);              
                 return null;
             })
 
@@ -89,10 +94,13 @@ export const  registerTokenTrigger = functions.database.ref('users/{userId}/auth
             const original = change.after.val();
             console.log('authIdToken  current  :  '+original);
             return change.before.ref.parent!.ref.child('loggedInAt').set(utils.GetFormattedDate()).then(error=>{
+                payloads.welcomPayloads.notification.title = "Hi "+snap.val().name +"!"
                 utils.sendMessage(token_id,payloads.welcomPayloads).then(t=>{
-                    return null; 
+                    console.log('sendMessage  done  :  '+t); 
+                    return null;
                 }).catch(e=>{
-                    return null;  
+                    console.log('sendMessage  failed  :  '+e); 
+                    return null;
                 });
             }).catch(e=>{
                 return null;

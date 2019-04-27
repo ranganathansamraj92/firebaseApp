@@ -7,13 +7,13 @@ const Loginpayload = {
 };
 const welcomPayload = {
     notification : {
-        title : "Welcome! ",
-        body : "Dream more! Do more!!!",
+        title : "Hi ! ",
+        body : "Welcome to BaseApis : Dream more! Do more!!",
         icon : "default"
     }
 };
 
-const loginBody = "You've just logged in at ";
+const loginBody = "You've logged-in at:";
 
 export const welcomPayloads = welcomPayload;
 
